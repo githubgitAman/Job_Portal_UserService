@@ -1,0 +1,7 @@
+package dev.aman.job_portal_userservice.services;
+
+import dev.aman.job_portal_userservice.dtos.UserDTOs;
+
+public interface UserService {
+    public UserDTOs registerUser(UserDTOs userDTO);
+}
