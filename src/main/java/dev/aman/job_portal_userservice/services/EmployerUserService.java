@@ -1,6 +1,7 @@
 package dev.aman.job_portal_userservice.services;
 
 import dev.aman.job_portal_userservice.dtos.LoginDTOs;
+import dev.aman.job_portal_userservice.dtos.OTPDTOs;
 import dev.aman.job_portal_userservice.dtos.UserDTOs;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,10 @@ public class EmployerUserService implements UserService{
 
     @Override
     public void loginUser(LoginDTOs loginDTO) {
-        ;
+    }
+
+    @Override
+    public Boolean generateOTP(String email) {
+        return null;
     }
 }
