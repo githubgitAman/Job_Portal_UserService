@@ -2,24 +2,23 @@ package dev.aman.job_portal_userservice.dtos;
 
 import dev.aman.job_portal_userservice.models.User;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
 //DTOs transfers data between layers or over the network.
 public class UserDTOs {
-    private Long id;
+    @NotBlank(message = "name not provided")
     private String name;
+    @NotBlank(message = "email not provided")
     private String email;
+    @NotBlank(message = "password not provided")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "please enter correct password")
     private String password;
     private UserTypeDTOs userType;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -55,7 +54,6 @@ public class UserDTOs {
 
     public User convertToUser() {
         User user = new User();
-        user.setId(this.id);
         user.setName(this.name);
         user.setEmail(this.email);
         user.setPassword(this.password);
