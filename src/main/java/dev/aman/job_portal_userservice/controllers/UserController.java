@@ -5,6 +5,8 @@ import dev.aman.job_portal_userservice.dtos.OTPDTOs;
 import dev.aman.job_portal_userservice.dtos.UserDTOs;
 import dev.aman.job_portal_userservice.services.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,13 @@ public class UserController {
         userService.generateOTP(email);
         OTPDTOs otpDTOs = new OTPDTOs();
         otpDTOs.setMessage("OTP generated successfully");
+        return new ResponseEntity<>(otpDTOs, HttpStatus.OK);
+    }
+    @GetMapping("/verifyOTP/{email}/{otp}")
+    public ResponseEntity<OTPDTOs> verifyOtp(@PathVariable String email, @PathVariable String otp) throws Exception {
+        userService.verifyOTP(email, otp);
+        OTPDTOs otpDTOs = new OTPDTOs();
+        otpDTOs.setMessage("OTP verified successfully");
         return new ResponseEntity<>(otpDTOs, HttpStatus.OK);
     }
 

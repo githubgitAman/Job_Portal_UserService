@@ -21,4 +21,9 @@ public class EmployerUserService implements UserService{
     public Boolean generateOTP(String email) {
         return null;
     }
+
+    @Override
+    public Boolean verifyOTP(String email, String otp) throws Exception {
+        return null;
+    }
 }

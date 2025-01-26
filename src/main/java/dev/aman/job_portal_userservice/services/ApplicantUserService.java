@@ -1,6 +1,7 @@
 package dev.aman.job_portal_userservice.services;
 
 import dev.aman.job_portal_userservice.Utilities.GeneratingOTPs;
+import dev.aman.job_portal_userservice.Utilities.OTPData;
 import dev.aman.job_portal_userservice.dtos.LoginDTOs;
 import dev.aman.job_portal_userservice.dtos.OTPDTOs;
 import dev.aman.job_portal_userservice.dtos.UserDTOs;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.Utilities;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+//import static sun.security.util.KnownOIDs.Data;
 
 @Service("Applicants")
 public class ApplicantUserService implements UserService {
@@ -75,8 +78,18 @@ public class ApplicantUserService implements UserService {
         otp.setEmail(email);
         otp.setLocalDateTime(LocalDateTime.now());
         otpRepository.save(otp);
-        mimeMessage.setText("Your Code is " + generatedOTP);
+        //Sending normal OTP
+//        mimeMessage.setText("Your OTP is: " + generatedOTP);
+        //Sending in HTML format
+        mimeMessageHelper.setText(OTPData.getMessageBody(generatedOTP, user.get().getName()), true);
         mailSender.send(mimeMessage);
+        return true;
+    }
+    @Override
+    public Boolean verifyOTP(String email, String otp) throws Exception {
+        Optional<OTPs> otps = otpRepository.findById(email);
+        if(otps.isEmpty() || !otps.get().getOtp().equals(otp))
+            throw new RuntimeException("OTP do not match");
         return true;
     }
 }
