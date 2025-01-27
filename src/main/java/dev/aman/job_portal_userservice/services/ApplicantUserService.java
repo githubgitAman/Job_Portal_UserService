@@ -10,6 +10,7 @@ import dev.aman.job_portal_userservice.models.User;
 import dev.aman.job_portal_userservice.repository.OTPRepository;
 import dev.aman.job_portal_userservice.repository.UserRepository;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,21 +20,22 @@ import javax.swing.text.Utilities;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-//import static sun.security.util.KnownOIDs.Data;
 
-@Service("Applicants")
+@Service("ApplicantsUser")
 public class ApplicantUserService implements UserService {
     private final JavaMailSenderImpl mailSender;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private OTPRepository otpRepository;
+    private ProfileService profileService;
 
     public ApplicantUserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JavaMailSenderImpl mailSender,
-                                OTPRepository otpRepository) {
+                                OTPRepository otpRepository, ProfileService profileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailSender = mailSender;
         this.otpRepository = otpRepository;
+        this.profileService = profileService;
     }
     @Override
     public UserDTOs registerUser(UserDTOs userDTO) {
@@ -44,6 +46,7 @@ public class ApplicantUserService implements UserService {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = userDTO.convertToUser();
         user = userRepository.save(user);
+        profileService.createProfile(user.getEmail());
         UserDTOs userDTOs = user.convertToUserDTOs();
         return userDTOs;
     }

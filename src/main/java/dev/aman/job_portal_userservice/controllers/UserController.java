@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     UserService userService;
-    public UserController(@Qualifier("Applicants") UserService userService) {
+    public UserController(@Qualifier("ApplicantsUser") UserService userService) {
 
         this.userService = userService;
     }
