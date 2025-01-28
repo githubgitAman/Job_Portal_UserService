@@ -3,6 +3,7 @@ package dev.aman.job_portal_userservice.dtos;
 import dev.aman.job_portal_userservice.models.Certificate;
 import dev.aman.job_portal_userservice.models.Experience;
 import dev.aman.job_portal_userservice.models.Profile;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Data
 public class ProfileDTOs {
+    @NotBlank(message = "email not provided")
     private String email;
     private String jobTitle;
     private String company;

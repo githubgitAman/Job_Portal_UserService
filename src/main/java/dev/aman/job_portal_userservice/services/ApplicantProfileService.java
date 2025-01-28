@@ -1,5 +1,6 @@
 package dev.aman.job_portal_userservice.services;
 
+import dev.aman.job_portal_userservice.dtos.ProfileDTOs;
 import dev.aman.job_portal_userservice.models.Profile;
 import dev.aman.job_portal_userservice.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,27 @@ public class ApplicantProfileService implements ProfileService{
         profile.setCertificates(new ArrayList<>());
         profileRepository.save(profile);
         return profile.getId();
+    }
+
+    @Override
+    public ProfileDTOs getProfile(String email) {
+       Profile profile = profileRepository.findByEmail(email);
+        if(profile == null) {
+            throw new RuntimeException("Profile not found");
+        }
+        return profile.profileToProfileDTOs();
+    }
+
+    @Override
+    public ProfileDTOs updateProfile(ProfileDTOs profileDTOs) {
+        Profile profile = profileRepository.findByEmail(profileDTOs.getEmail());
+        if(profile == null) {
+            throw new RuntimeException("Profile not found");
+        }
+        Profile updatedProfile = profileDTOs.profileDTOsToProfile();
+        //Saving previous ID
+        updatedProfile.setId(profile.getId());
+        profileRepository.save(updatedProfile);
+        return updatedProfile.profileToProfileDTOs();
     }
 }

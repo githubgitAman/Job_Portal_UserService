@@ -31,6 +31,7 @@ public class UserController {
     }
     @PostMapping("/login")
     public void loginUser(@RequestBody LoginDTOs loginDTOs) {
+
         userService.loginUser(loginDTOs);
     }
     @PostMapping("/sendOtp/{email}")
