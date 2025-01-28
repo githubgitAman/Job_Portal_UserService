@@ -2,6 +2,7 @@ package dev.aman.job_portal_userservice.dtos;
 
 import dev.aman.job_portal_userservice.models.Certificate;
 import dev.aman.job_portal_userservice.models.Experience;
+import dev.aman.job_portal_userservice.models.Job;
 import dev.aman.job_portal_userservice.models.Profile;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -20,6 +21,15 @@ public class ProfileDTOs {
     private List<String> skills;
     private List<ExperienceDTOs> experiences;
     private List<CertificateDTOs> certificates;
+    private List<Long> savedJobs;
+
+    public List<Long> getSavedJobs() {
+        return savedJobs;
+    }
+
+    public void setSavedJobs(List<Long> savedJobs) {
+        this.savedJobs = savedJobs;
+    }
 
     public String getEmail() {
         return email;
@@ -93,6 +103,7 @@ public class ProfileDTOs {
         profile.setCompany(this.company);
         profile.setLocation(this.location);
         profile.setSkills(this.skills);
+        profile.setSavedJobs(this.savedJobs);
         List<Experience> experiences = this.experiences.stream()
                 .map(experienceDTO -> {
                     Experience experience = new Experience();

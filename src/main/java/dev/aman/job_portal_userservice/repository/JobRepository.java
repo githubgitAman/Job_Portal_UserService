@@ -1,5 +1,6 @@
 package dev.aman.job_portal_userservice.repository;
 
+import dev.aman.job_portal_userservice.models.Applicants;
 import dev.aman.job_portal_userservice.models.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,5 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     Job save(Job job);
     List<Job> findAll();
     Optional<Job> findById(long id);
+    List<Job> findByPostedBy(Long postedBy);
 }

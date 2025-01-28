@@ -26,6 +26,24 @@ public class Profile extends BaseModel {
     private List<Experience> experiences;
     @OneToMany(mappedBy = "profile")
     private List<Certificate> certificates;
+    //we use this annotation when we want to create a separate table for simple collections type
+    //It tells JPA that the savedJobs list is not an entity itself,
+    //but rather a collection of simple values that should be stored in a separate table.
+    @ElementCollection
+    //The name = "profile_job" specifies that the collection should be stored in a table named profile_job.
+    //The joinColumns = @JoinColumn(name = "job_id") specifies that this collection table will have a foreign key column (job_id)
+    //that refers to the primary key of the entity that owns the collection
+    @CollectionTable(name = "profile_job", joinColumns = @JoinColumn(name = "job_id"))
+    @Column(name = "savedJobs")
+    private List<Long> savedJobs;
+
+    public List<Long> getSavedJobs() {
+        return savedJobs;
+    }
+
+    public void setSavedJobs(List<Long> savedJobs) {
+        this.savedJobs = savedJobs;
+    }
 
     public String getEmail() {
         return email;
@@ -99,6 +117,7 @@ public class Profile extends BaseModel {
         profileDTOs.setLocation(this.location);
         profileDTOs.setAbout(this.about);
         profileDTOs.setSkills(this.skills);
+        profileDTOs.setSavedJobs(this.savedJobs);
         // Convert List<Experience> to List<ExperienceDTOs>
         List<ExperienceDTOs> experienceDTOs = this.experiences.stream()
                 .map(experience -> {

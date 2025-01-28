@@ -1,21 +1,25 @@
-package dev.aman.job_portal_userservice.models;
+package dev.aman.job_portal_userservice.dtos;
 
-import dev.aman.job_portal_userservice.dtos.ApplicantStatusDTOs;
-import dev.aman.job_portal_userservice.dtos.ApplicantsDTOs;
+import dev.aman.job_portal_userservice.models.Applicants;
+import dev.aman.job_portal_userservice.models.BaseModel;
+import dev.aman.job_portal_userservice.models.Job;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-public class Applicants extends BaseModel {
-    @ManyToOne
-    private Job job;
+public class ApplicantsDTOs  {
+//    private Job job;
+    @NotBlank(message = "name cannot be empty")
     private String name;
+    @NotBlank(message = "email cannot be empty")
     private String email;
+    @NotBlank(message = "phone number cannot be empty")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Invalid phone number, it must be exactly 10 digits")
     private Long phone;
     private String website;
     private String resume;
@@ -24,20 +28,20 @@ public class Applicants extends BaseModel {
     private ApplicantStatusDTOs applicantStatus;
     private LocalDateTime interviewTime;
 
+//    public Job getJob() {
+//        return job;
+//    }
+//
+//    public void setJob(Job job) {
+//        this.job = job;
+//    }
+
     public LocalDateTime getInterviewTime() {
         return interviewTime;
     }
 
     public void setInterviewTime(LocalDateTime interviewTime) {
         this.interviewTime = interviewTime;
-    }
-
-    public Job getJob() {
-        return job;
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
     }
 
     public String getName() {
@@ -104,19 +108,17 @@ public class Applicants extends BaseModel {
         this.applicantStatus = applicantStatus;
     }
 
-    public ApplicantsDTOs applicantsDTOsToApplicants(){
-        ApplicantsDTOs applicantsDTOs = new ApplicantsDTOs();
-//        applicantsDTOs.setJob(this.job);
-        applicantsDTOs.setName(this.name);
-        applicantsDTOs.setTimeStamp(this.timeStamp);
-        applicantsDTOs.setApplicantStatus(this.applicantStatus);
-        applicantsDTOs.setEmail(this.email);
-        applicantsDTOs.setPhone(this.phone);
-        applicantsDTOs.setWebsite(this.website);
-        applicantsDTOs.setResume(this.resume);
-        applicantsDTOs.setCoverLetter(this.coverLetter);
-        applicantsDTOs.setInterviewTime(this.interviewTime);
-        applicantsDTOs.setInterviewTime(this.interviewTime);
-        return applicantsDTOs;
+    public Applicants applicantsToApplicantsDTOs() {
+        Applicants applicants = new Applicants();
+//        applicants.setJob(this.job);
+        applicants.setName(this.name);
+        applicants.setEmail(this.email);
+        applicants.setPhone(this.phone);
+        applicants.setWebsite(this.website);
+        applicants.setResume(this.resume);
+        applicants.setCoverLetter(this.coverLetter);
+        applicants.setTimeStamp(this.timeStamp);
+        applicants.setApplicantStatus(this.applicantStatus);
+        return applicants;
     }
 }
